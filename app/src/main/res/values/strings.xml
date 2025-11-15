@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GroupWork Manager</string>
+    <string name="onboarding_welcome">Welcome to GroupWork Manager</string>
+    <string name="enter_name_hint">Enter your name</string>
+    <string name="continue_button">Continue</string>
+    <string name="home_title">Your Groups</string>
+    <string name="create_group_button">Create New Group</string>
+    <string name="group_name_hint">Group name</string>
+    <string name="course_name_hint">Course / Unit</string>
+    <string name="lecturer_name_hint">Lecturer (optional)</string>
+    <string name="add_member_button">Add Member</string>
+    <string name="save_button">Save</string>
+    <string name="task_title_hint">Task title</string>
+    <string name="task_description_hint">Task description</string>
+    <string name="task_priority_hint">Priority</string>
+    <string name="task_deadline_hint">Deadline</string>
+    <string name="add_task_button">Add Task</string>
+    <string name="view_chat_button">View Comments</string>
+    <string name="send_comment_button">Send</string>
+</resources>

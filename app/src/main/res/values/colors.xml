@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Strathmore University inspired color palette -->
+    <color name="deep_blue">#003366</color>
+    <color name="bright_red">#CC0000</color>
+    <color name="light_gold">#FFCC33</color>
+
+    <!-- Additional Material3 colors -->
+    <color name="md_theme_light_primary">@color/deep_blue</color>
+    <color name="md_theme_light_onPrimary">@android:color/white</color>
+    <color name="md_theme_light_secondary">@color/light_gold</color>
+    <color name="md_theme_light_onSecondary">@android:color/black</color>
+    <color name="md_theme_light_error">@color/bright_red</color>
+    <color name="md_theme_light_onError">@android:color/white</color>
+    <color name="md_theme_light_background">@android:color/white</color>
+    <color name="md_theme_light_onBackground">@android:color/black</color>
+    <color name="md_theme_light_surface">@android:color/white</color>
+    <color name="md_theme_light_onSurface">@android:color/black</color>
+
+    <color name="md_theme_dark_primary">@color/light_gold</color>
+    <color name="md_theme_dark_onPrimary">@android:color/black</color>
+    <color name="md_theme_dark_secondary">@color/bright_red</color>
+    <color name="md_theme_dark_onSecondary">@android:color/black</color>
+    <color name="md_theme_dark_error">@color/bright_red</color>
+    <color name="md_theme_dark_onError">@android:color/white</color>
+    <color name="md_theme_dark_background">#121212</color>
+    <color name="md_theme_dark_onBackground">@android:color/white</color>
+    <color name="md_theme_dark_surface">#121212</color>
+    <color name="md_theme_dark_onSurface">@android:color/white</color>
+</resources>
