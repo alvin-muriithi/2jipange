@@ -38,6 +38,7 @@ import kotlinx.coroutines.launch
  * Screen for creating a new group. Allows the user to enter group details and
  * a list of members. On save, the repository is invoked to persist the data.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GroupCreationScreen(
     onBack: () -> Unit,

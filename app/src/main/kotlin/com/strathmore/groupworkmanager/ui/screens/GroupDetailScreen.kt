@@ -36,6 +36,7 @@ import com.strathmore.groupworkmanager.ui.viewmodel.GroupDetailViewModel
 /**
  * Screen that shows details of a specific group, including its tasks and members.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GroupDetailScreen(
     viewModel: GroupDetailViewModel,

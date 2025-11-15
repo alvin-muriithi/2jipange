@@ -1,7 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -24,7 +20,7 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -33,20 +29,12 @@ android {
         }
     }
 
-    // JVM Toolchain
-    kotlin {
-        jvmToolchain(17)
-    }
-
-    // Java compatibility
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-
         isCoreLibraryDesugaringEnabled = true
     }
 
-    // Kotlin compatibility (must match Java)
     kotlinOptions {
         jvmTarget = "17"
     }
@@ -58,6 +46,12 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"
     }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
 
 dependencies {
@@ -65,31 +59,42 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
+    // Core libraries desugaring for java.time support on API < 26
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
+    // Compose
     implementation("androidx.compose.material3:material3")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("androidx.activity:activity-compose:1.9.0")
 
+    // Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 
+    // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.5")
 
+    // Room
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
 
+    // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
+    // WorkManager
     implementation("androidx.work:work-runtime-ktx:2.9.0")
 
+    // Accompanist
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.3-beta")
 
+    // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
