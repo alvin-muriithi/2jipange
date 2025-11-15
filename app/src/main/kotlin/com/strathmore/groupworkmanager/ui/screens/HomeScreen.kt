@@ -7,7 +7,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -35,27 +34,45 @@ fun HomeScreen(
     val pendingTasks by viewModel.pendingTasks.collectAsState(initial = 0)
     val deadlinesToday by viewModel.deadlinesToday.collectAsState(initial = 0)
 
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
         Text(
             text = stringResource(id = R.string.home_title),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(16.dp))
+
         // Quick stats row
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            StatCard(title = "Groups", value = totalGroups.toString())
-            StatCard(title = "Pending", value = pendingTasks.toString())
-            StatCard(title = "Due Today", value = deadlinesToday.toString())
+            StatCard(
+                title = "Groups",
+                value = totalGroups.toString(),
+                modifier = Modifier.weight(1f)
+            )
+            StatCard(
+                title = "Pending",
+                value = pendingTasks.toString(),
+                modifier = Modifier.weight(1f)
+            )
+            StatCard(
+                title = "Due Today",
+                value = deadlinesToday.toString(),
+                modifier = Modifier.weight(1f)
+            )
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onCreateGroup, modifier = Modifier.fillMaxWidth()) {
             Text(text = stringResource(id = R.string.create_group_button))
         }
         Spacer(modifier = Modifier.height(16.dp))
+
         // List of groups
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(groups) { group ->
@@ -67,19 +84,23 @@ fun HomeScreen(
 }
 
 @Composable
-private fun StatCard(title: String, value: String) {
+private fun StatCard(title: String, value: String, modifier: Modifier = Modifier) {
     Card(
-        modifier = Modifier
-            .weight(1f)
-            .padding(end = 8.dp),
+        modifier = modifier,
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = title, style = MaterialTheme.typography.bodyMedium)
-            Text(text = value, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+            Text(
+                text = value,
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
@@ -93,7 +114,11 @@ private fun GroupItem(group: GroupEntity, onClick: () -> Unit) {
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = group.groupName, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text(
+                text = group.groupName,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = group.courseName, style = MaterialTheme.typography.bodyMedium)
             group.lecturerName?.let {
