@@ -1,5 +1,6 @@
 package com.strathmore.groupworkmanager.ui.screens
 
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,7 +30,8 @@ fun GroupDetailScreen(
     viewModel: GroupDetailViewModel,
     onBack: () -> Unit,
     onAddTask: () -> Unit,
-    onViewComments: () -> Unit
+    onViewComments: () -> Unit,
+    onShareGroup: () -> Unit
 ) {
     val group by viewModel.group.collectAsState(initial = null)
     val members by viewModel.members.collectAsState(initial = emptyList())
@@ -42,6 +44,12 @@ fun GroupDetailScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    // Add this share button
+                    IconButton(onClick = { onShareGroup() }) {
+                        Icon(Icons.Default.Share, contentDescription = "Share Group")
                     }
                 }
             )

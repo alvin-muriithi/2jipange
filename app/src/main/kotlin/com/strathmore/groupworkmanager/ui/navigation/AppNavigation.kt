@@ -47,7 +47,10 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
             val vm: HomeViewModel = viewModel(factory = object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     @Suppress("UNCHECKED_CAST")
-                    return HomeViewModel(appContainer.groupRepository, appContainer.taskRepository) as T
+                    return HomeViewModel(
+                        appContainer.groupRepository,
+                        appContainer.taskRepository
+                    ) as T
                 }
             })
             HomeScreen(
@@ -91,7 +94,8 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
                 viewModel = vm,
                 onBack = { navController.popBackStack() },
                 onAddTask = { navController.navigate("addTask/$groupId") },
-                onViewComments = { navController.navigate("comments/$groupId") }
+                onViewComments = { navController.navigate("comments/$groupId") },
+                onShareGroup = TODO()
             )
         }
         composable(
@@ -149,6 +153,31 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
                 viewModel = vm,
                 onBack = { navController.popBackStack() }
             )
+        }
+
+        composable(
+            route = "qrShare/{groupId}",
+            arguments = listOf(navArgument("groupId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val groupId = backStackEntry.arguments?.getInt("groupId") ?: return@composable
+
+            // Create ViewModel to get group details
+            val vm: GroupDetailViewModel = viewModel(
+                factory = object : ViewModelProvider.Factory {
+                    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                        @Suppress("UNCHECKED_CAST")
+                        return GroupDetailViewModel(
+                            savedStateHandle = SavedStateHandle(mapOf("groupId" to groupId)),
+                            groupRepository = appContainer.groupRepository,
+                            memberRepository = appContainer.memberRepository,
+                            taskRepository = appContainer.taskRepository,
+                            commentRepository = appContainer.commentRepository
+                        ) as T
+                    }
+                }
+            )
+
+            val group by vm.group.collectAsState(initial = null)
         }
     }
 }
