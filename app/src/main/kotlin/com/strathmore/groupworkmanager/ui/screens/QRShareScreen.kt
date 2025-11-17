@@ -1,5 +1,6 @@
 package com.strathmore.groupworkmanager.ui.screens
 
+import androidx.compose.runtime.collectAsState
 import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.compose.foundation.Image
