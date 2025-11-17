@@ -19,7 +19,12 @@ import com.strathmore.groupworkmanager.data.model.UserEntity
  * representing the user profile, groups, members, tasks and comments.
  */
 @Database(
-    entities = [UserEntity::class, GroupEntity::class, MemberEntity::class, TaskEntity::class, CommentEntity::class],
+    entities = [UserEntity::class,
+                GroupEntity::class,
+                MemberEntity::class,
+                TaskEntity::class,
+                CommentEntity::class
+               ],
     version = 1,
     exportSchema = false
 )
@@ -30,4 +35,5 @@ abstract class GroupWorkDatabase : RoomDatabase() {
     abstract fun memberDao(): MemberDao
     abstract fun taskDao(): TaskDao
     abstract fun commentDao(): CommentDao
+    abstract fun contributionDao(): ContributionDao
 }

@@ -26,7 +26,8 @@ class GroupDetailViewModel(
     private val groupRepository: GroupRepository,
     private val memberRepository: MemberRepository,
     private val taskRepository: TaskRepository,
-    private val commentRepository: CommentRepository
+    private val commentRepository: CommentRepository,
+    private val contributionRepository: ContributionRepository
 ) : ViewModel() {
 
     // groupId is passed through navigation arguments
@@ -61,7 +62,20 @@ class GroupDetailViewModel(
     }
 
     fun markTaskStatus(task: TaskEntity, status: TaskStatus) {
-        viewModelScope.launch { taskRepository.markTaskStatus(task, status) }
+        viewModelScope.launch { taskRepository.markTaskStatus(task, status)
+
+            if (status == TaskStatus.COMPLETED && task.assignedToMemberId != null) {
+                val contribution = ContributionEntity(
+                    taskId = task.id,
+                    memberId = task.assignedToMemberId,
+                    contributionType = "COMPLETED_TASK",
+                    description = "Completed: ${task.title}",
+                    timestamp = System.currentTimeMillis()
+                )
+                contributionRepository.insertContribution(contribution)
+            }
+        }
+
     }
 
     fun addComment(message: String) {
