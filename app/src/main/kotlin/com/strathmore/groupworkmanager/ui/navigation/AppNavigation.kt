@@ -1,6 +1,8 @@
 package com.strathmore.groupworkmanager.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -10,12 +12,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.compose.rememberNavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.strathmore.groupworkmanager.di.AppContainer
-import com.strathmore.groupworkmanager.ui.screens.AddTaskScreen
-import com.strathmore.groupworkmanager.ui.screens.CommentsScreen
-import com.strathmore.groupworkmanager.ui.screens.GroupCreationScreen
-import com.strathmore.groupworkmanager.ui.screens.GroupDetailScreen
-import com.strathmore.groupworkmanager.ui.screens.HomeScreen
-import com.strathmore.groupworkmanager.ui.screens.OnboardingScreen
+import com.strathmore.groupworkmanager.ui.screens.*
 import com.strathmore.groupworkmanager.ui.viewmodel.GroupDetailViewModel
 import com.strathmore.groupworkmanager.ui.viewmodel.HomeViewModel
 import com.strathmore.groupworkmanager.ui.viewmodel.OnboardingViewModel
@@ -43,6 +40,7 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
                 }
             })
         }
+
         composable("home") {
             val vm: HomeViewModel = viewModel(factory = object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -56,9 +54,11 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
             HomeScreen(
                 viewModel = vm,
                 onCreateGroup = { navController.navigate("createGroup") },
-                onGroupSelected = { groupId -> navController.navigate("groupDetail/$groupId") }
+                onGroupSelected = { groupId -> navController.navigate("groupDetail/$groupId") },
+                onScanQR = { navController.navigate("qrScan") }
             )
         }
+
         composable("createGroup") {
             GroupCreationScreen(
                 onBack = { navController.popBackStack() },
@@ -69,6 +69,7 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
                 groupRepository = appContainer.groupRepository
             )
         }
+
         composable(
             route = "groupDetail/{groupId}",
             arguments = listOf(
@@ -95,9 +96,10 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
                 onBack = { navController.popBackStack() },
                 onAddTask = { navController.navigate("addTask/$groupId") },
                 onViewComments = { navController.navigate("comments/$groupId") },
-                onShareGroup = TODO()
+                onShareGroup = { navController.navigate("qrShare/$groupId") }
             )
         }
+
         composable(
             route = "addTask/{groupId}",
             arguments = listOf(
@@ -127,6 +129,7 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
                 onCancel = { navController.popBackStack() }
             )
         }
+
         composable(
             route = "comments/{groupId}",
             arguments = listOf(
@@ -155,14 +158,15 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
             )
         }
 
+        // QR Share Screen
         composable(
             route = "qrShare/{groupId}",
             arguments = listOf(navArgument("groupId") { type = NavType.IntType })
         ) { backStackEntry ->
             val groupId = backStackEntry.arguments?.getInt("groupId") ?: return@composable
 
-            // Create ViewModel to get group details
             val vm: GroupDetailViewModel = viewModel(
+                key = "qrShare_$groupId",
                 factory = object : ViewModelProvider.Factory {
                     override fun <T : ViewModel> create(modelClass: Class<T>): T {
                         @Suppress("UNCHECKED_CAST")
@@ -178,6 +182,23 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
             )
 
             val group by vm.group.collectAsState(initial = null)
+
+            QRShareScreen(
+                group = group,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // QR Scan Screen
+        composable("qrScan") {
+            QRScanScreen(
+                onBack = { navController.popBackStack() },
+                onGroupScanned = { newGroupId ->
+                    navController.popBackStack()
+                    navController.navigate("groupDetail/$newGroupId")
+                },
+                groupRepository = appContainer.groupRepository
+            )
         }
     }
 }

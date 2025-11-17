@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.*
@@ -33,14 +34,15 @@ import com.strathmore.groupworkmanager.data.model.GroupEntity
 import com.strathmore.groupworkmanager.ui.viewmodel.HomeViewModel
 
 /**
- * Enhanced home screen with beautiful gradient cards and better statistics
+ * Enhanced home screen with QR scan functionality
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
     onCreateGroup: () -> Unit,
-    onGroupSelected: (Int) -> Unit
+    onGroupSelected: (Int) -> Unit,
+    onScanQR: () -> Unit = {}
 ) {
     val groups by viewModel.groups.collectAsState(initial = emptyList())
     val totalGroups by viewModel.totalGroups.collectAsState(initial = 0)
@@ -61,6 +63,14 @@ fun HomeScreen(
                             text = "Manage your group projects",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onScanQR) {
+                        Icon(
+                            imageVector = Icons.Default.QrCodeScanner,
+                            contentDescription = "Scan QR Code"
                         )
                     }
                 },
@@ -105,7 +115,7 @@ fun HomeScreen(
                     GradientStatCard(
                         title = "Pending",
                         value = pendingTasks.toString(),
-                        icon = Icons.Default.Add, // Using Add as alternative
+                        icon = Icons.Default.Add,
                         gradient = Brush.linearGradient(
                             colors = listOf(
                                 Color(0xFFf093fb),
@@ -145,7 +155,10 @@ fun HomeScreen(
             // Groups List
             if (groups.isEmpty()) {
                 item {
-                    EmptyStateCard(onCreateGroup = onCreateGroup)
+                    EmptyStateCard(
+                        onCreateGroup = onCreateGroup,
+                        onScanQR = onScanQR
+                    )
                 }
             } else {
                 items(groups) { group ->
@@ -168,8 +181,7 @@ private fun GradientStatCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier
-            .height(120.dp),
+        modifier = modifier.height(120.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
@@ -295,7 +307,10 @@ private fun EnhancedGroupItem(group: GroupEntity, onClick: () -> Unit) {
 }
 
 @Composable
-private fun EmptyStateCard(onCreateGroup: () -> Unit) {
+private fun EmptyStateCard(
+    onCreateGroup: () -> Unit,
+    onScanQR: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -324,15 +339,24 @@ private fun EmptyStateCard(onCreateGroup: () -> Unit) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Create your first group to get started",
+                text = "Create a new group or scan a QR code to join",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = onCreateGroup) {
-                Icon(Icons.Default.Add, contentDescription = null)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Create Group")
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(onClick = onCreateGroup) {
+                    Icon(Icons.Default.Add, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Create Group")
+                }
+                OutlinedButton(onClick = onScanQR) {
+                    Icon(Icons.Default.QrCodeScanner, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Scan QR")
+                }
             }
         }
     }
