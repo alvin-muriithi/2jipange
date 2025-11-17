@@ -86,8 +86,7 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
                             groupRepository = appContainer.groupRepository,
                             memberRepository = appContainer.memberRepository,
                             taskRepository = appContainer.taskRepository,
-                            commentRepository = appContainer.commentRepository,
-                            contributionRepository = appContainer.contributionRepository
+                            commentRepository = appContainer.commentRepository
                         ) as T
                     }
                 }
@@ -118,8 +117,7 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
                             groupRepository = appContainer.groupRepository,
                             memberRepository = appContainer.memberRepository,
                             taskRepository = appContainer.taskRepository,
-                            commentRepository = appContainer.commentRepository,
-                            contributionRepository = appContainer.contributionRepository
+                            commentRepository = appContainer.commentRepository
                         ) as T
                     }
                 }
@@ -149,8 +147,7 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
                             groupRepository = appContainer.groupRepository,
                             memberRepository = appContainer.memberRepository,
                             taskRepository = appContainer.taskRepository,
-                            commentRepository = appContainer.commentRepository,
-                            contributionRepository = appContainer.contributionRepository
+                            commentRepository = appContainer.commentRepository
                         ) as T
                     }
                 }
@@ -178,8 +175,7 @@ fun AppNavigation(appContainer: AppContainer, navController: NavHostController =
                             groupRepository = appContainer.groupRepository,
                             memberRepository = appContainer.memberRepository,
                             taskRepository = appContainer.taskRepository,
-                            commentRepository = appContainer.commentRepository,
-                            contributionRepository = appContainer.contributionRepository
+                            commentRepository = appContainer.commentRepository
                         ) as T
                     }
                 }

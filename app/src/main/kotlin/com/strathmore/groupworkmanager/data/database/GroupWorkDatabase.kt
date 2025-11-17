@@ -35,5 +35,5 @@ abstract class GroupWorkDatabase : RoomDatabase() {
     abstract fun memberDao(): MemberDao
     abstract fun taskDao(): TaskDao
     abstract fun commentDao(): CommentDao
-    abstract fun contributionDao(): ContributionDao
+
 }

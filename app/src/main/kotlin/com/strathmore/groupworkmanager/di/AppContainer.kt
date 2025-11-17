@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.strathmore.groupworkmanager.data.database.GroupWorkDatabase
 import com.strathmore.groupworkmanager.data.repository.CommentRepository
-import com.strathmore.groupworkmanager.data.repository.ContributionRepository
 import com.strathmore.groupworkmanager.data.repository.GroupRepository
 import com.strathmore.groupworkmanager.data.repository.MemberRepository
 import com.strathmore.groupworkmanager.data.repository.TaskRepository
@@ -28,5 +27,4 @@ class AppContainer(context: Context) {
     val memberRepository: MemberRepository by lazy { MemberRepository(database.memberDao()) }
     val taskRepository: TaskRepository by lazy { TaskRepository(database.taskDao()) }
     val commentRepository: CommentRepository by lazy { CommentRepository(database.commentDao()) }
-    val contributionRepository: ContributionRepository by lazy { ContributionRepository(database.contributionDao()) }
 }
